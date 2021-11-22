@@ -18,3 +18,9 @@ npm install & npm i --save ant-design-vue@next
    > 4. add `main.ts`
    > 5. add `env.d.ts`
    > 6. change "/src/main.js" to "/src/main.ts" in index.html
+   > 
+
+4. use vue-router
+
+5. 使用scss： npm install node-sass sass-loader sass -D
+

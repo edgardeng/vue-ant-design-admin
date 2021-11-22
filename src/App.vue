@@ -1,8 +1,4 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
+
 
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
@@ -12,10 +8,17 @@ import HelloWorld from './components/HelloWorld.vue'
     <a-button>Default Button</a-button>
     <a-button type="dashed">Dashed Button</a-button>
     <a-button type="text">Text Button</a-button>
-    <a-button type="link">Link Button</a-button>
+    <a-button type="link" >Link Button</a-button>
   </div>
+  <router-link to="/auth/login">Login</router-link>
 
 </template>
+
+<script lang="ts" setup>
+// This starter template is using Vue 3 <script setup> SFCs
+// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
+import HelloWorld from './components/HelloWorld.vue'
+</script>
 
 <style>
 #app {
