@@ -1,8 +1,7 @@
 ##  setup 语法糖
 >只需在script标签中添加setup，组件只需引入不用注册，属性和方法也不用返回，也不用写setup函数，也不用写export default ，甚至是自定义指令也可以在我们的template中自动获得。
 
-```vue
-
+```html
 <template>
   <my-component :num="num" @click="addNum" />
 </template>
@@ -10,14 +9,12 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import MyComponent from './MyComponent .vue'; //必须使用驼峰命名
-
   // 像在平常的setup中一样的写,但是不需要返回任何变量
-  const num= ref(0)       //在此处定义的 num 可以直接使用
-  const addNum= () => {   //函数也可以直接引用,不用在return中返回
-    num.value++
+  const num= ref(0)       / /在此处定义的 num 可以直接使用
+  const addNum= () => {   // 函数也可以直接引用,不用在return中返回
+    num.value ++
   }
 </script>
-
 ```
  
 ### 因为没有了setup函数，那么props，emit，attrs怎么获取呢
@@ -25,25 +22,26 @@
 setup script语法糖提供了新的API来供我们使用
 
 defineProps 用来接收父组件传来的 props ;
+
 defineEmits 用来声明触发的事件。
-```
-//父组件
 
-<template>
-  <my-son foo="🚀🚀🚀🚀🚀🚀" @childClick="childClick" />
-</template>
+__父组件__
 
-<script lang="ts" setup>
-import MySon from "./MySon.vue";
+   ```html
+    <template>
+      <my-son foo="🚀🚀🚀🚀🚀🚀" @childClick="childClick" />
+    </template>
+    
+    <script lang="ts" setup>
+    import MySon from "./MySon.vue";
+    let childClick = (e: any):void => {
+      console.log(e);  //🚀🚀🚀🚀🚀🚀
+    };
+    </script>
+   ```
+__子组件__
 
-let childClick = (e: any):void => {
-  console.log(e);  //🚀🚀🚀🚀🚀🚀
-};
-</script>
-```
-
-//子组件
-```
+```html
 <template>
   <span @click="sonClick">信息:{{ props.foo }}</span>
 </template>
@@ -70,7 +68,8 @@ import { useSlots, useAttrs } from 'vue'
 const slots = useSlots()
 const attrs = useAttrs()
 </script>
- ```
+```
+
 defineExpose
 如果在父组件中通过ref='xxx’的方法来获取子组件实例，
 子组件使用了script setup语法糖,
