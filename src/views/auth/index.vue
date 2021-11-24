@@ -10,24 +10,24 @@
           <div class="header">
             <a href="/">
               <img src="../../assets/logo.png" class="logo" alt="logo">
-              <span class="title">Ant Design Admin</span>
+              <span class="title">{{ title }}</span>
             </a>
           </div>
-<!--          <div class="desc">-->
-<!--            {{ $t('layouts.userLayout.title') }}-->
-<!--          </div>-->
+                    <div class="desc">
+<!--                      {{ $t('layouts.userLayout.title') }}-->
+                    </div>
         </div>
 
         <router-view/>
 
         <div class="footer">
-<!--          <div class="links">-->
-<!--            <a href="_self">帮助</a>-->
-<!--            <a href="_self">隐私</a>-->
-<!--            <a href="_self">条款</a>-->
-<!--          </div>-->
+          <!--          <div class="links">-->
+          <!--            <a href="_self">帮助</a>-->
+          <!--            <a href="_self">隐私</a>-->
+          <!--            <a href="_self">条款</a>-->
+          <!--          </div>-->
           <div class="copyright">
-            Copyright &copy; 2021  <a href="https://edgardeng.github.io" target="_blank">edgardeng</a>
+            Copyright &copy; 2021 <a href="https://edgardeng.github.io" target="_blank">edgardeng</a> {{ version }}
           </div>
         </div>
       </div>
@@ -36,9 +36,13 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, unref, computed } from 'vue';
+import {reactive, ref, unref, computed} from 'vue';
+
 console.log('--- auth setup ---')
 const isMobile = ref(false)
+const version = import.meta.env.VITE_APP_VERSION
+const title = import.meta.env.VITE_APP_TITLE
+
 // import {deviceMixin} from '@/store/device-mixin'
 import SelectLang from '/@/components/SelectLang.vue'
 
@@ -69,21 +73,17 @@ import SelectLang from '/@/components/SelectLang.vue'
       }
     }
   }
-
   .container {
     width: 100%;
     min-height: 100%;
     background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
     background-size: 100%;
-    //padding: 50px 0 84px;
     position: relative;
-
     .user-layout-lang {
       width: 100%;
       height: 40px;
       line-height: 44px;
       text-align: right;
-
       .select-lang-trigger {
         cursor: pointer;
         padding: 12px;
@@ -101,11 +101,9 @@ import SelectLang from '/@/components/SelectLang.vue'
 
       .top {
         text-align: center;
-
         .header {
           height: 44px;
           line-height: 44px;
-
           .badge {
             position: absolute;
             display: inline-block;
@@ -115,7 +113,6 @@ import SelectLang from '/@/components/SelectLang.vue'
             margin-top: -10px;
             opacity: 0.8;
           }
-
           .logo {
             height: 44px;
             vertical-align: top;
@@ -132,12 +129,11 @@ import SelectLang from '/@/components/SelectLang.vue'
             top: 2px;
           }
         }
-
         .desc {
           font-size: 14px;
           color: rgba(0, 0, 0, 0.45);
           margin-top: 12px;
-          margin-bottom: 40px;
+          margin-bottom: 30px;
         }
       }
 

@@ -24,7 +24,6 @@ const onChangeLanguage = (item: any) => {
 <style scoped>
 .lang-dropdown-link {
   cursor: pointer;
-  font-size: 18px;
   margin-right: 24px;
 }
 </style>

@@ -3,73 +3,74 @@
     <a-form
         id="formLogin"
         class="user-layout-login"
-        ref="formLogin"
-        :form="form"
-        @submit="handleSubmit" >
+        ref="loginRef"
+        :model="form"
+        :rules="rules"
+        @submit="handleSubmit">
       <a-tabs
           :activeKey="customActiveKey"
           :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
-          @change="handleTabClick" >
+          @change="handleTabClick">
         <a-tab-pane key="tab1" :tab="$t('user.login.tab-login-credentials')">
           <a-alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;"
                    :message="$t('user.login.message-invalid-credentials')"/>
-          <a-form-item>
+          <a-form-item name="username">
             <a-input
                 size="large"
                 type="text"
                 :placeholder="$t('user.login.username.placeholder')"
-                v-model:value="username"
-                >
-<!--              v-decorator="[-->
-<!--              'username',-->
-<!--              {rules: [{ required: true, message: $t('user.userName.required') }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}-->
-<!--              ]"-->
-              <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                v-model:value="form.username">
+              <template #prefix>
+                <UserOutlined/>
+              </template>
             </a-input>
           </a-form-item>
 
-          <a-form-item>
+          <a-form-item name="password">
             <a-input-password
                 size="large"
                 :placeholder="$t('user.login.password.placeholder')"
-                v-model:value="password"
-
-            >
-<!--              v-decorator="[-->
-<!--              'password',-->
-<!--              {rules: [{ required: true, message: $t('user.password.required') }], validateTrigger: 'blur'}-->
-<!--              ]"-->
-              <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                v-model:value="form.password">
+              <template #prefix>
+                <LockOutlined/>
+              </template>
             </a-input-password>
           </a-form-item>
         </a-tab-pane>
         <a-tab-pane key="tab2" :tab="$t('user.login.tab-login-mobile')">
-          <a-form-item>
-            <a-input size="large" type="text" :placeholder="$t('user.login.mobile.placeholder')"
-                     v-model:value="mobile">
-<!--                     v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: $t('user.login.mobile.placeholder') }], validateTrigger: 'change'}]">-->
-              <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+          <a-form-item name="mobile">
+            <a-input size="large"
+                     type="text"
+                     :placeholder="$t('user.login.mobile.placeholder')"
+                     v-model:value="form.mobile">
+              <template #prefix>
+                <MobileOutlined/>
+              </template>
+
+              <!--                     v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: $t('user.login.mobile.placeholder') }], validateTrigger: 'change'}]">-->
+              <!--              <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>-->
             </a-input>
           </a-form-item>
 
           <a-row :gutter="16">
             <a-col class="gutter-row" :span="16">
-              <a-form-item>
+              <a-form-item name="captcha">
                 <a-input size="large" type="text"
                          :placeholder="$t('user.login.mobile.verification-code.placeholder')"
-                         v-model:value="smsCaptcha">
-<!--                         v-decorator="['captcha', {rules: [{ required: true, message: $t('user.verification-code.required') }], validateTrigger: 'blur'}]">-->
-                  <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                         v-model:value="form.captcha">
+                  <template #prefix>
+                    <MailOutlined/>
+                  </template>
                 </a-input>
               </a-form-item>
             </a-col>
             <a-col class="gutter-row" :span="8">
               <a-button
-                  class="getCaptcha"
+                  class="onSendCaptcha"
                   tabindex="-1"
-                  :disabled="state.smsSendBtn"
-                  @click.stop.prevent="getCaptcha"
-                  v-text="!state.smsSendBtn && $t('user.register.get-verification-code') || (state.time+' s')"
+                  :disabled="!enableCaptcha"
+                  @click.stop.prevent="onSendCaptcha"
+                  v-text="enableCaptcha && $t('user.register.get-verification-code') || (captchaSecond +' s')"
               ></a-button>
             </a-col>
           </a-row>
@@ -77,16 +78,8 @@
       </a-tabs>
 
       <a-form-item>
-<!--        <a-checkbox v-decorator="['rememberMe', { valuePropName: 'checked' }]">{{-->
-<!--            $t('user.login.remember-me')-->
-<!--          }}-->
-<!--        </a-checkbox>-->
-<!--        <router-link-->
-<!--            :to="{ name: 'recover', params: { user: 'aaa'} }"-->
-<!--            class="forge-password"-->
-<!--            style="float: right;"-->
-<!--        >{{ $t('user.login.forgot-password') }}-->
-<!--        </router-link>-->
+         <a-checkbox :checked="remember">{{ $t('user.login.remember-me') }} </a-checkbox>
+         <router-link to="/auth/forget" class="forge-password" style="float: right;">{{ $t('user.login.forgot-password') }}</router-link>
       </a-form-item>
 
       <a-form-item style="margin-top:24px">
@@ -102,47 +95,62 @@
       </a-form-item>
 
       <div class="user-login-other">
-        <span>{{ $t('user.login.sign-in-with') }}</span>
-        <a>
-          <a-icon class="item-icon" type="alipay-circle"></a-icon>
-        </a>
-        <a>
-          <a-icon class="item-icon" type="taobao-circle"></a-icon>
-        </a>
-        <a>
-          <a-icon class="item-icon" type="weibo-circle"></a-icon>
-        </a>
-<!--        <router-link class="register" :to="{ name: 'register' }">{{ $t('user.login.signup') }}</router-link>-->
+        <a-space>
+          <span>{{ $t('user.login.sign-in-with') }}</span>
+          <a><AlipayCircleOutlined style="color: #08c"/> </a>
+          <a><WechatOutlined style="color: #f51655"/> </a>
+          <a><WeiboCircleOutlined  style="color: #0dc836"/> </a>
+        </a-space>
+
+        <router-link class="register" :to="{ name: 'register' }">{{ $t('user.login.signup') }}</router-link>
       </div>
     </a-form>
   </div>
 </template>
 
 <script lang="ts">
-
+import {UserOutlined, LockOutlined, MailOutlined, MobileOutlined,
+  AlipayCircleOutlined, WeiboCircleOutlined,WechatOutlined } from "@ant-design/icons-vue";
 import md5 from 'md5'
-import {defineComponent, ref} from 'vue'
+import {defineComponent, ref, reactive} from 'vue'
+import type { UnwrapRef } from 'vue';
 import {useI18n} from 'vue-i18n'
+import {login }from '/@/api/auth.ts'
 
 
 export default defineComponent({
   name: 'AuthLogin',
+  components: {
+    UserOutlined, LockOutlined, MobileOutlined, MailOutlined,
+    AlipayCircleOutlined,  WeiboCircleOutlined,WechatOutlined
+  },
   setup() {
     const {t, locale} = useI18n();
+    const loginRef = ref();
+    interface FormState {
+      username: string;
+      password: string;
+      mobile: string;
+      captcha:string
+    }
+    const form: UnwrapRef<FormState> = reactive({
+      username: '',
+      password: undefined,
+      mobile: undefined,
+      captcha:undefined
+    });
+    const enableCaptcha = ref(true)
+    const captchaSecond = ref(60)
+    
     const lng = ref('zh-CN')
     const loginType = ref(0)
     const customActiveKey = ref('')
     const loginBtn = ref(false)
-    const username = ref('')
-    const smsCaptcha =ref('')
-    const mobile =ref('')
 
-    console.log(locale)
-    const changeLanguage = () => {
-      lng.value = lng.value == 'zh-CN' ? 'en-US' : 'zh-CN'
-      locale.value = lng.value
-    }
-
+    const remember = ref(false)
+    const password = ref('')
+    const smsCaptcha = ref('')
+    const mobile = ref('')
     const handleUsernameOrEmail = (rule, value, callback) => {
       const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/
       if (regex.test(value)) {
@@ -152,11 +160,23 @@ export default defineComponent({
       }
       callback()
     }
+    const rules = {
+      username: [
+        {required: true, message: t('user.username.required'), trigger: 'change'},
+        {validator: handleUsernameOrEmail, trigger: 'change'}],
+      password: [{required: true, message: t('user.password.required'), trigger: 'change'}],
+      mobile:  [{ required: true, pattern: /^1[34578]\d{9}$/, message: t('user.phone-number.required') }],
+      captcha:  [{ required: true, pattern: /^\d{4}$/, message: t('user.verification-code.required') }],
+    };
+
     const handleTabClick = (key: string) => {
       customActiveKey.value = key
     }
     const handleSubmit = (e: Event) => {
       e.preventDefault()
+      login(form.username,md5(form.password)).then((res:any) => {
+        console.log(res)
+      })
       // const {
       //   form: {validateFields},
       //   state,
@@ -188,7 +208,19 @@ export default defineComponent({
       //   }
       // })
     }
-    const getCaptcha = (e: Event) => {
+    const onSendCaptcha = (e: Event) => {
+      console.log('--- start onSendCaptcha')
+      enableCaptcha.value = false
+      const interval = window.setInterval(() => {
+        if (captchaSecond.value-- <= 0) {
+          captchaSecond.value = 60
+          enableCaptcha.value = true
+          window.clearInterval(interval)
+        }
+      }, 1000)
+
+
+
       // e.preventDefault()
       // const { form: { validateFields }, state } = this
       //
@@ -255,16 +287,21 @@ export default defineComponent({
     }
 
     return {
+      loginRef,
+      rules,
+      form,
+      enableCaptcha,
+      captchaSecond,
       customActiveKey,
       loginBtn,
       // login type: 0 email, 1 username, 2 telephone
       loginType,
-      username,
-      password: ref(''),
+      remember,
+      password,
       isLoginError: false,
       requiredTwoStepCaptcha: false,
       stepCaptchaVisible: false,
-      form: {},
+     
       state: {
         time: 60,
         loginBtn: false,
@@ -272,6 +309,7 @@ export default defineComponent({
         loginType: 0,
         smsSendBtn: false
       },
+      onSendCaptcha,
       handleSubmit,
       handleUsernameOrEmail,
       handleTabClick,
@@ -280,9 +318,7 @@ export default defineComponent({
   created() {
     console.log('Login, created')
   },
-  components: {
-    // TwoStepCaptcha
-  }
+
 })
 </script>
 
@@ -292,7 +328,7 @@ export default defineComponent({
     font-size: 14px;
   }
 
-  .getCaptcha {
+  .onSendCaptcha {
     display: block;
     width: 100%;
     height: 40px;
@@ -313,18 +349,8 @@ export default defineComponent({
     text-align: left;
     margin-top: 24px;
     line-height: 22px;
-
-    .item-icon {
-      font-size: 24px;
-      color: rgba(0, 0, 0, 0.2);
-      margin-left: 16px;
-      vertical-align: middle;
-      cursor: pointer;
-      transition: color 0.3s;
-
-      &:hover {
-        color: #1890ff;
-      }
+    a span {
+        font-size: 22px;
     }
 
     .register {

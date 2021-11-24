@@ -1,13 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" href="/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Ant Design Admin</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+</head>
+<body>
+<div id="app">
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #eff2ef;
+        }
+        .app-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            display: flex;
+            -webkit-transform: translate3d(-50%, -50%, 0);
+            transform: translate3d(-50%, -50%, 0);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .app-loading .app-loading-logo {
+            display: block;
+            width: 90px;
+        }
+        .dot {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            margin: 40px 0;
+            font-size: 32px;
+            transform: rotate(45deg);
+            box-sizing: border-box;
+            animation: antRotate 1.2s infinite linear;
+        }
+        .dot i {
+            position: absolute;
+            display: block;
+            width: 18px;
+            height: 18px;
+            background-color: #1890ff;
+            border-radius: 100%;
+            opacity: 0.3;
+            animation: antSpinMove 1s infinite linear alternate;
+            transform-origin: 50% 50%;
+        }
+        .dot i:nth-child(1) {
+            top: 0;
+            left: 0;
+        }
+        .dot i:nth-child(2) {
+            top: 0;
+            right: 0;
+            -webkit-animation-delay: 0.4s;
+            animation-delay: 0.4s;
+        }
+        .dot i:nth-child(3) {
+            right: 0;
+            bottom: 0;
+            -webkit-animation-delay: 0.8s;
+            animation-delay: 0.8s;
+        }
+        .dot i:nth-child(4) {
+            bottom: 0;
+            left: 0;
+            -webkit-animation-delay: 1.2s;
+            animation-delay: 1.2s;
+        }
+        @keyframes antRotate {
+            to {
+                -webkit-transform: rotate(405deg);
+                transform: rotate(405deg);
+            }
+        }
+        @-webkit-keyframes antRotate {
+            to {
+                -webkit-transform: rotate(405deg);
+                transform: rotate(405deg);
+            }
+        }
+
+        @keyframes antSpinMove {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes antSpinMove {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+    <div class="app-loading">
+        <img src="/resource/img/logo.png" class="app-loading-logo" alt="Logo"/>
+        <div id="loading">
+            <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div id="not_support" style="display: none;color: orangered;padding: 20px;"> 本应用不支持该浏览器，请使用Edge或其他浏览器</div>
+        <h4 class="app-loading-title">Ant Design Admin</h4>
+    </div>
+</div>
+<script>
+    var userAgent = navigator.userAgent;
+    var browser = 'unknown';
+    if (userAgent.indexOf("IE") !== -1) {
+        browser = "IE";
+    } else if (userAgent.indexOf('Trident') !== -1) {
+        browser = 'IE 11';
+    }
+    // else if(userAgent.indexOf('Firefox')!=-1){
+    //     browser="Firefox";
+    // }else if(userAgent.indexOf('OPR')!=-1){
+    //     browser="Opera";
+    // }else if(userAgent.indexOf('Chrome')!=-1){
+    //     browser="Chrome";
+    // }else if(userAgent.indexOf('Safari')!=-1) {
+    //     browser = "Safari";
+    // }
+    if (browser.indexOf('IE') != -1) {
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("not_support").style.display = "block";
+    }
+</script>
+<script type="module" src="/src/main.ts"></script>
+</body>
 </html>

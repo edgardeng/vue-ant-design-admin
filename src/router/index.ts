@@ -22,6 +22,11 @@ const routes = [
                 name: 'register',
                 component: () => import(/* webpackChunkName: "auth" */ ('/@/views/auth/Register.vue'))
             },
+            {
+                path: '/auth/forget',
+                name: 'forget',
+                component: () => import(/* webpackChunkName: "auth" */ ('/@/views/auth/Forget.vue'))
+            },
         ]
     },
     {path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('/@/views/404.vue')},

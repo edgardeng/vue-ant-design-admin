@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-console.log('----App setup')
+// console.log('----App setup')
 </script>
 
 <style>
@@ -13,5 +13,6 @@ console.log('----App setup')
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   height: 100%;
+  font-size: 16px;
 }
 </style>

@@ -1,5 +1,5 @@
 export default {
-  'user.login.userName': 'userName',
+  'user.login.username': 'username',
   'user.login.password': 'password',
   'user.login.username.placeholder': 'Account: admin',
   'user.login.password.placeholder': 'password: admin or ant.design',
@@ -29,8 +29,9 @@ export default {
   'user.register-result.view-mailbox': 'View mailbox',
   'user.email.required': 'Please enter your email!',
   'user.email.wrong-format': 'The email address is in the wrong format!',
-  'user.userName.required': 'Please enter account name or email address',
+  'user.username.required': 'Please enter account name or email address',
   'user.password.required': 'Please enter your password!',
+  'user.password.length.required': 'Please enter 6 - 18 character!',
   'user.password.twice.msg': 'The passwords entered twice do not match!',
   'user.password.strength.msg':
     'The password is not strong enough',
