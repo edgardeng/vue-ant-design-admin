@@ -31,6 +31,9 @@
             <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)"/>
           </a-col>
           <a-col :span="auto">
+            <DarkModeSwitch> </DarkModeSwitch>
+          </a-col>
+          <a-col :span="auto">
             <a-dropdown placement="bottomRight">
               <span class="ant-pro-account-avatar">
                 <a-avatar size="small" src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"/>
@@ -76,6 +79,7 @@ import {
 } from '@ant-design/icons-vue';
 import {defineComponent, ref} from 'vue';
 import HelloWorld from '/@/components/HelloWorld.vue'
+import DarkModeSwitch from '/@/components/DarkModeSwitch.vue'
 
 export default defineComponent({
   components: {
@@ -84,7 +88,8 @@ export default defineComponent({
     UploadOutlined,
     MenuUnfoldOutlined,
     MenuFoldOutlined,
-    HelloWorld
+    HelloWorld,
+    DarkModeSwitch
   },
   setup() {
     return {

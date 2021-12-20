@@ -30,11 +30,17 @@
 * Axios
 
 ## Branch
+> 本仓库还有2个分支 blank 和 master
 
-* blank (Blank Template 空模板)
+### blank
+> Blank Template 空模板 
 
+* 功能：
+  
   ✅ 多语言(中文，英文)
-
+  
+* 页面：
+  
   ✅ 登录页
 
   ✅ 注册页
@@ -45,7 +51,8 @@
 
   ✅ 个人页
 
-* master (Whole Project 完整项目,含blank分支所有功能)
+### master 
+> Whole Project 完整项目,含blank分支所有功能)
 
   ❌ 用户管理
   

@@ -1,3 +1,5 @@
+
+import Random from 'mockjs'
 export default [
     {
         url: '/api/auth/login',
@@ -31,8 +33,15 @@ export default [
         },
     },
     {
-        url: '/api/text',
-        method: 'post',
+        url: '/api/auth/captcha',
+        method: 'get',
+        rawResponse: async (req, res) => {
+           return Random.dataImage('120*40','1234')
+        },
+    },
+    {
+        url: '/api/auth/captcha2',
+        method: 'get',
         rawResponse: async (req, res) => {
             let reqbody = '';
             await new Promise((resolve) => {

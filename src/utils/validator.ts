@@ -25,5 +25,5 @@ export function scorePassword (pass) {
     }
     score += (variationCount - 1) * 10
 
-    return parseInt(score)
+    return  score //parseInt(score)
 }

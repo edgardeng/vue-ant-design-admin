@@ -19,6 +19,9 @@ npm install & npm i --save ant-design-vue@next
    > 5. add `env.d.ts`
    > 6. change "/src/main.js" to "/src/main.ts" in index.html
 
+ 使用TSLint规范代码
+ 1. 添加TSlint: `yarn add --dev eslint eslint-plugin-vue`
+ 2. 创建文件`.eslintrc.ts`
 
 ### 4. use vue-router
   1. add `router/index.ts`

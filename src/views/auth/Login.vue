@@ -92,6 +92,7 @@
             :disabled="state.loginBtn"
         >{{ $t('user.login.login') }}
         </a-button>
+        <img src="/api/auth/captcha" alt="" width="20">
       </a-form-item>
 
       <div class="user-login-other">
