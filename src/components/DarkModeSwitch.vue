@@ -1,6 +1,6 @@
 <!-- Switch for Light Theme or Dark Theme -->
 <template>
-  <a @click="onModeChanged">
+  <span @click="onModeChanged">
     <icon v-if="isDark">
       <template #component>
         <svg class="icon" viewBox="0 0 1024 1024" width="32" height="32">
@@ -19,7 +19,7 @@
         </svg>
       </template>
     </icon>
-  </a>
+  </span>
 
 </template>
 
@@ -30,7 +30,7 @@ import {ref} from "vue";
 const isDark = ref(false);
 const onModeChanged = (e: Event) => {
   isDark.value = !isDark.value
-  const root = document.getElementById('app');
+  const root = document.getElementById('html_root');
   root.setAttribute('data-theme', isDark.value ? 'dark' : 'light');
 }
 </script>

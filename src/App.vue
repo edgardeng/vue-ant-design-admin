@@ -6,6 +6,6 @@
 // console.log('----App setup')
 </script>
 
-<style>
-@import "assets/style/app.scss";
-</style>
+<!--<style>-->
+<!--@import "assets/style/app.scss";-->
+<!--</style>-->

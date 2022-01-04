@@ -15,7 +15,7 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
     console.log('command:', command, 'mode:',mode, 'version:',env.VITE_APP_VERSION )
     let assetsDir = './v' + env.VITE_APP_VERSION + '/assets'
     return {
-        base: '.',
+        base: './',
         build: {
             base:'.',
             assetsDir

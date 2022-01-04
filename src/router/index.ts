@@ -5,7 +5,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 const AuthLayout = () => import('/@/views/auth/index.vue');
 
 const routes = [
-    {path: '/', component: () => import('/@/views/home.vue')},
+    {path: '/', component: () => import('/@/views/home/index.vue')},
     {
         path: '/auth',
         component: AuthLayout,

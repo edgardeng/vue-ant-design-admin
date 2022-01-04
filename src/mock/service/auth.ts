@@ -1,5 +1,6 @@
+// -------- Mock Service For Auth APIs
+import { Random } from 'mockjs';
 
-import Random from 'mockjs'
 export default [
     {
         url: '/api/auth/login',
@@ -35,17 +36,21 @@ export default [
     {
         url: '/api/auth/captcha',
         method: 'get',
-        rawResponse: async (req, res) => {
+        // response: {
+        //     pic: Random.dataImage('120*40','1234'),
+        //     // pic: Random.image('800x600', Random.color(), Random.color(), Random.title())
+        // }
+        rawResponse: async (req:any, resL:any) => {
            return Random.dataImage('120*40','1234')
         },
     },
     {
         url: '/api/auth/captcha2',
         method: 'get',
-        rawResponse: async (req, res) => {
+        rawResponse: async (req:any, res:any) => {
             let reqbody = '';
             await new Promise((resolve) => {
-                req.on('data', (chunk) => {
+                req.on('data', (chunk:any) => {
                     reqbody += chunk;
                 });
                 req.on('end', () => resolve(undefined));

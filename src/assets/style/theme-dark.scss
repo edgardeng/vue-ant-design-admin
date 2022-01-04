@@ -1,5 +1,19 @@
 [data-theme=dark] {
   color: hsla(0, 0%, 96%, 0.85);
+  #app {
+    background: #05203a;
+  }
+
+  .ant-layout-header {
+    color: #ffffff;
+    background: #001529;
+  }
+  .ant-badge {
+    color: #ffffff;
+  }
+  .ant-layout {
+    background: #05203a;
+  }
 
   .text-secondary {
     color: #8b949e;

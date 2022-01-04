@@ -1,9 +1,13 @@
+
 [data-theme=light] {
   color: #010101;
   .text-secondary {
     color: rgb(0 0 0 / 45%);
   }
 
+  .ant-layout-header {
+    background: #ffffff;
+  }
   .ant-alert-success {
     background-color: #f6ffed;
     border: 1px solid #b7eb8f;
