@@ -1,25 +1,33 @@
 <template>
-  <a-row>
+  <a-row :gutter="16" style="text-align: left">
     <a-col :span="18">
-      <a-row>
-        <a-col v-for="item in [0,1,2]" :span="7" >
+      <!-- 指标 -->
+      <a-row :gutter="8">
+        <a-col v-for="item in [0,1,2]" :span="8" >
           <a-card size="small" title="访问数" >
             <template #extra>
-              <a-tag type="warning">  月</a-tag>
+              <a-tag color="success">月</a-tag>
             </template>
-            <div style="font-size: 48px;" >
+            <div style="font-size: 48px; text-align: center;padding: 10px;" >
               2000
             </div>
           </a-card>
+
         </a-col>
       </a-row>
-      <a-row>
-        <div ref="chartRef" style="height:300px;width:100%"></div>
+      <!-- 图标 -->
+      <a-row style="margin-top: 10px;">
+        <a-card title="访问量" style="width:100%" size="small">
+          <div ref="chartRef" style="height:300px;width:100%"></div>
+        </a-card>
+
       </a-row>
+
     </a-col>
+
     <a-col :span="6">
-      <a-card>
-        <div>
+      <a-card >
+        <div style="text-align: center">
           <a-avatar
               size="large"
               src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"/>
@@ -27,8 +35,8 @@
           <div>Frontend Software Engineer</div>
           <div style="padding-top: 10px">
             <p>
-              <a-icon /> xx部门 <br/>
-              <a-icon  /> **上海
+<!--              <a-icon /> xx部门 <br/>-->
+<!--              <a-icon  /> **上海-->
             </p>
           </div>
 
@@ -36,9 +44,10 @@
 
       </a-card>
       <a-card title="标签" style="margin-top: 30px;">
-        <a-tag>Vue</a-tag>
-        <a-tag>Admin Page</a-tag>
-        <a-tag>Echarts</a-tag>
+        <a-tag color="success"> <template #icon> <check-circle-outlined /> </template>Vue</a-tag>
+        <a-tag color="processing">Admin Page</a-tag>
+        <a-tag color="warning">Github</a-tag>
+        <a-tag  color="error">Echarts</a-tag>
       </a-card>
     </a-col>
 
@@ -46,7 +55,7 @@
 </template>
 <script lang="ts">
 import {defineComponent, ref, onMounted, Ref, unref} from 'vue';
-import * as echarts from 'echarts/core';
+import * as echarts from 'echarts';
 import type { EChartsOption } from 'echarts';
 
 export default defineComponent({
@@ -55,6 +64,7 @@ export default defineComponent({
   setup() {
     const chartRef = ref<HTMLDivElement | null>(null)
     function setOptions( elRef: Ref<HTMLDivElement> , options:EChartsOption) {
+      console.log('---------------setOptions')
       console.log(elRef)
       console.log(options)
       let chartInstance: echarts.ECharts | null = null;
@@ -74,6 +84,7 @@ export default defineComponent({
       }
     }
     onMounted(() => {
+
       setOptions(chartRef as Ref<HTMLDivElement>, {
         tooltip: {
           trigger: 'axis',
@@ -145,7 +156,6 @@ export default defineComponent({
         ],
       });
     });
-
     return {
       chartRef
     }

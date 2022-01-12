@@ -1,19 +1,23 @@
 [data-theme=dark] {
   color: hsla(0, 0%, 96%, 0.85);
   #app {
-    background: #05203a;
+    background: #000;
+  }
+  .ant-layout {
+    background: #000;
   }
 
   .ant-layout-header {
-    color: #ffffff;
-    background: #001529;
+
+    background: #141414;
   }
   .ant-badge {
     color: #ffffff;
   }
-  .ant-layout {
-    background: #05203a;
+  .ant-card-head-title, .ant-layout-header {
+    color: #f0f0f0;
   }
+
 
   .text-secondary {
     color: #8b949e;
@@ -36,5 +40,16 @@
   .ant-select-tree li .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected {
     color: rgb(0 0 0 / 90%);
   }
+  .ant-card{
+    color: hsla(0,0%,100%,.65);
+    background: #141414;
+  }
+  .ant-card-bordered{
+    border: 1px solid #303030;
+  }
+  .ant-card-head {
+    border-bottom: 1px solid #303030;
+  }
+
 
 }

@@ -1,6 +1,10 @@
 
 [data-theme=light] {
   color: #010101;
+  #app {
+    background: #f0f2f5;
+  }
+
   .text-secondary {
     color: rgb(0 0 0 / 45%);
   }
