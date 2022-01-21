@@ -17,7 +17,6 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
     return {
         base: './',
         build: {
-            base:'.',
             assetsDir
         },
         server: {

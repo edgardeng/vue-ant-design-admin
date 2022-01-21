@@ -36,6 +36,24 @@
               </template>
             </a-input-password>
           </a-form-item>
+
+<!--          <a-row :gutter="16">-->
+<!--            <a-col class="gutter-row" :span="16">-->
+<!--              <a-form-item name="captcha">-->
+<!--                <a-input size="large" type="text"-->
+<!--                         :placeholder="$t('user.login.mobile.verification-code.placeholder')"-->
+<!--                         v-model:value="form.captcha">-->
+<!--                  <template #prefix>-->
+<!--                    <MailOutlined/>-->
+<!--                  </template>-->
+<!--                </a-input>-->
+<!--              </a-form-item>-->
+<!--            </a-col>-->
+<!--            <a-col class="gutter-row" :span="8">-->
+<!--              <img @click="onSendPicCaptcha" :src="captchaUrl" alt="" />-->
+<!--            </a-col>-->
+<!--          </a-row>-->
+
         </a-tab-pane>
         <a-tab-pane key="tab2" :tab="$t('user.login.tab-login-mobile')">
           <a-form-item name="mobile">
@@ -82,25 +100,23 @@
          <router-link to="/auth/forget" class="forge-password" style="float: right;">{{ $t('user.login.forgot-password') }}</router-link>
       </a-form-item>
 
-      <a-form-item style="margin-top:24px">
+      <a-form-item style="margin-top:20px">
         <a-button
-            size="large"
+            @click="handleSubmit"
             type="primary"
             htmlType="submit"
             class="login-button"
-            :loading="state.loginBtn"
-            :disabled="state.loginBtn"
-        >{{ $t('user.login.login') }}
+            :loading="!enableLogin"
+            :disabled="!enableLogin" >{{ $t('user.login.login') }}
         </a-button>
-        <img src="/api/auth/captcha" alt="" width="20">
       </a-form-item>
 
       <div class="user-login-other">
         <a-space>
           <span>{{ $t('user.login.sign-in-with') }}</span>
           <a><AlipayCircleOutlined style="color: #08c"/> </a>
-          <a><WechatOutlined style="color: #f51655"/> </a>
-          <a><WeiboCircleOutlined  style="color: #0dc836"/> </a>
+          <a><WechatOutlined style="color: #0dc836"/> </a>
+          <a><WeiboCircleOutlined  style="color: #f51655"/> </a>
         </a-space>
 
         <router-link class="register" :to="{ name: 'register' }">{{ $t('user.login.signup') }}</router-link>
@@ -113,11 +129,11 @@
 import {UserOutlined, LockOutlined, MailOutlined, MobileOutlined,
   AlipayCircleOutlined, WeiboCircleOutlined,WechatOutlined } from "@ant-design/icons-vue";
 import md5 from 'md5'
-import {defineComponent, ref, reactive} from 'vue'
+import {defineComponent, ref, reactive, onMounted} from 'vue'
 import type { UnwrapRef } from 'vue';
 import {useI18n} from 'vue-i18n'
-import {login }from '/@/api/auth.ts'
-
+import { login , captcha}from '/@/api/auth.ts'
+import type { FormInstance } from 'ant-design-vue'
 
 export default defineComponent({
   name: 'AuthLogin',
@@ -127,7 +143,6 @@ export default defineComponent({
   },
   setup() {
     const {t, locale} = useI18n();
-    const loginRef = ref();
     interface FormState {
       username: string;
       password: string;
@@ -142,6 +157,7 @@ export default defineComponent({
     });
     const enableCaptcha = ref(true)
     const captchaSecond = ref(60)
+    const enableLogin = ref(true)
     
     const lng = ref('zh-CN')
     const loginType = ref(0)
@@ -152,6 +168,7 @@ export default defineComponent({
     const password = ref('')
     const smsCaptcha = ref('')
     const mobile = ref('')
+    const captchaUrl = ref('')
     const handleUsernameOrEmail = (rule, value, callback) => {
       const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/
       if (regex.test(value)) {
@@ -173,11 +190,22 @@ export default defineComponent({
     const handleTabClick = (key: string) => {
       customActiveKey.value = key
     }
+    const loginRef = ref<FormInstance>();
+
     const handleSubmit = (e: Event) => {
       e.preventDefault()
-      login(form.username,md5(form.password)).then((res:any) => {
+      enableLogin.value = false
+      console.log(loginRef.value)
+      loginRef.value.validateFields(['username', 'password']).then((res)=>{
+        enableLogin.value = true
         console.log(res)
+            login(form.username,md5(form.password)).then((res:any) => {
+              console.log(res)
+            })
+      }).catch((e)=>{
+        enableLogin.value = true
       })
+
       // const {
       //   form: {validateFields},
       //   state,
@@ -208,6 +236,13 @@ export default defineComponent({
       //     }, 600)
       //   }
       // })
+    }
+    const onSendPicCaptcha = ()=>{
+      captcha().then((res:any)=>{
+        console.log(res)
+        captchaUrl.value = res.data
+      })
+
     }
     const onSendCaptcha = (e: Event) => {
       console.log('--- start onSendCaptcha')
@@ -287,6 +322,11 @@ export default defineComponent({
       // })
     }
 
+    onMounted(() => {
+      console.log('Login, onMounted')
+      onSendPicCaptcha()
+    })
+
     return {
       loginRef,
       rules,
@@ -299,10 +339,13 @@ export default defineComponent({
       loginType,
       remember,
       password,
+      captchaUrl,
+      onSendPicCaptcha,
       isLoginError: false,
       requiredTwoStepCaptcha: false,
       stepCaptchaVisible: false,
-     
+      enableLogin,
+
       state: {
         time: 60,
         loginBtn: false,
@@ -316,9 +359,7 @@ export default defineComponent({
       handleTabClick,
     }
   },
-  created() {
-    console.log('Login, created')
-  },
+
 
 })
 </script>

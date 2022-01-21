@@ -36,13 +36,16 @@ export default [
     {
         url: '/api/auth/captcha',
         method: 'get',
+        response: {
+            err_code: 0, data: Random.image('100x38', Random.color(), Random.color(), Random.title(),'1234')
+        },
         // response: {
         //     pic: Random.dataImage('120*40','1234'),
         //     // pic: Random.image('800x600', Random.color(), Random.color(), Random.title())
         // }
-        rawResponse: async (req:any, resL:any) => {
-           return Random.dataImage('120*40','1234')
-        },
+        // rawResponse: async (req:any, resL:any) => {
+        //    return Random.dataImage('120*40','1234')
+        // },
     },
     {
         url: '/api/auth/captcha2',
