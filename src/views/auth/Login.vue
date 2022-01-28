@@ -134,6 +134,8 @@ import type { UnwrapRef } from 'vue';
 import {useI18n} from 'vue-i18n'
 import { login , captcha}from '/@/api/auth.ts'
 import type { FormInstance } from 'ant-design-vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'AuthLogin',
@@ -142,6 +144,8 @@ export default defineComponent({
     AlipayCircleOutlined,  WeiboCircleOutlined,WechatOutlined
   },
   setup() {
+    const store = useStore()
+    const router = useRouter()
     const {t, locale} = useI18n();
     interface FormState {
       username: string;
@@ -195,13 +199,15 @@ export default defineComponent({
     const handleSubmit = (e: Event) => {
       e.preventDefault()
       enableLogin.value = false
-      console.log(loginRef.value)
+      // console.log(loginRef.value)
       loginRef.value.validateFields(['username', 'password']).then((res)=>{
         enableLogin.value = true
-        console.log(res)
-            login(form.username,md5(form.password)).then((res:any) => {
-              console.log(res)
-            })
+        login(form.username,md5(form.password)).then((res:any) => {
+          if (res.data) {
+            store.commit('SET_CURRENT_USER', res.data)
+            router.replace('/')
+          }
+        })
       }).catch((e)=>{
         enableLogin.value = true
       })
@@ -345,14 +351,7 @@ export default defineComponent({
       requiredTwoStepCaptcha: false,
       stepCaptchaVisible: false,
       enableLogin,
-
-      state: {
-        time: 60,
-        loginBtn: false,
-        // login type: 0 email, 1 username, 2 telephone
-        loginType: 0,
-        smsSendBtn: false
-      },
+      // ...mapMutations(['SET_CURRENT_USER']),
       onSendCaptcha,
       handleSubmit,
       handleUsernameOrEmail,

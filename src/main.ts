@@ -11,9 +11,8 @@ const app = createApp(App)
 
 app.config.globalProperties.$t = i18n.global.t // 使用 $t 语法
 
+app.use(store)
 app.use(router)
 app.use(Antd)
-app.use(store)
 app.use(i18n)
 app.mount("#app")
-

@@ -61,7 +61,7 @@ client.interceptors.response.use((response) => {
     var data = response.data
     if (data && data.err_code !== 0) {
         notification.error({
-            message: 'Error',
+            message: '错误',
             description: data.err_msg ? data.err_msg : '未知错误'
         })
         return Promise.reject(new Error(''))

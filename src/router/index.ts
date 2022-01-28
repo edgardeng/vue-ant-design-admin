@@ -1,7 +1,9 @@
 import {createRouter, createWebHistory} from 'vue-router'
 //import type {RouteRecordRaw, RouteMeta} from 'vue-router';
 // import { UserLayout, BasicLayout, BlankLayout } from '@/layouts'
-
+// import {useStore} from 'vuex'
+// const store = useStore()
+import store from '../store/index'
 const AuthLayout = () => import('/@/views/auth/index.vue');
 
 const routes = [
@@ -36,5 +38,25 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
 })
+
+router.beforeEach((to, from,next) => {
+    let user = undefined
+    try{
+        user = store.state.user.username
+    } catch (e) {
+
+    }
+
+    let matched = to.path.match('^/auth/+')
+    // console.log('before from', from.path, ' to ', to.path)
+    if (!user) {
+        if (matched == null) {
+            next('/auth/login') // 未登录
+        }
+    }
+    next()
+    // return false // 返回 false 以取消导航
+})
+
 
 export default router
